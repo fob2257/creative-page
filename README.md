@@ -4,21 +4,31 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam orci urna, dignis
 
 ## Installation
 
-Usaremos el paquete [http-server](https://www.npmjs.com/package/http-server) para hacer un deploy de nuestra landing page.
+Usaremos el paquete [serve](https://www.npmjs.com/package/serve) para montar nuestra static page.
 
 ```bash
-npm install -g http-server
+yarn global add serve
 ```
 
 ## Usage
 
 ```bash
-http-server creative-page/
-
-# Starting up http-server, serving .
-# Available on:
-  # http://192.168.100.229:8080
-  # http://127.0.0.1:8080
-# Hit CTRL-C to stop the server
+yarn run build
 ```
-Despues navegamos a [http://127.0.0.1:8080/index.html](http://127.0.0.1:8080/index.html)
+
+```bash
+serve creative-page/build
+
+┌─────────────────────────────────────────────────┐
+│                                                 │
+│   Serving!                                      │
+│                                                 │
+│   - Local:            http://localhost:5000     │
+│   - On Your Network:  http://10.155.31.1:5000   │
+│                                                 │
+│   Copied local address to clipboard!            │
+│                                                 │
+└─────────────────────────────────────────────────┘
+
+```
+Despues navegamos a [http://localhost:5000](http://localhost:5000)
