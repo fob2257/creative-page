@@ -18,7 +18,7 @@ const TodoListItem = ({
         onClick={() => itemRemove(item.id)}
       >
         &times;
-        </button>
+      </button>
     </li>
   );
 
