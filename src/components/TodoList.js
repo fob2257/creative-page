@@ -1,55 +1,45 @@
-import React, { Component } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 
 import TodoListItem from './TodoListItem';
 
-class TodoList extends Component {
-  constructor() {
-    super();
+const willMount = { current: true };
 
-    console.log('Lifecycle: constructor()');
-  };
+const TodoList = ({ items, removeFn, doneFn }) => {
+  if (willMount.current) console.log('Lifecycle: componentWillMount()');
 
-  componentWillMount() {
-    console.log('Lifecycle: componentWillMount()');
-  };
-
-  componentDidMount() {
+  useEffect(() => {
+    willMount.current = false;
     console.log('Lifecycle: componentDidMount()');
-  };
 
-  componentWillReceiveProps(props) {
-    console.log('Lifecycle: componentWillReceiveProps()', { props });
-  };
+    return () => {
+      console.log('Lifecycle: componentWillUnmount()');
+    };
+  }, []);
 
-  componentDidUpdate(previousProps) {
-    console.log('Lifecycle: componentDidUpdate()', { previousProps });
-  };
+  useEffect(() => {
+    console.log('Lifecycle: componentWillReceiveProps()', { items });
 
-  componentWillUnmount() {
-    console.log('Lifecycle: componentWillUnmount()');
-  };
+    return () => {
+      console.log('Lifecycle: componentDidUpdate()', { previousItems: items });
+    };
+  }, [items]);
 
-  render() {
+  useLayoutEffect(() => {
     console.log('Lifecycle: render()');
+  }, []);
 
-    const { items, removeFn, doneFn } = this.props;
-
-    return (
-      <ul className='list-group'>
-        {
-          items.map((item, i) => (
-            <TodoListItem
-              key={i}
-              item={item}
-              itemRemove={removeFn}
-              itemDone={doneFn}
-            />
-          ))
-        }
-      </ul>
-    );
-  };
+  return (
+    <ul className="list-group">
+      {items.map((item, i) => (
+        <TodoListItem
+          key={i}
+          item={item}
+          itemRemove={removeFn}
+          itemDone={doneFn}
+        />
+      ))}
+    </ul>
+  );
 };
-
 
 export default TodoList;

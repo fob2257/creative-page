@@ -1,56 +1,39 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react';
 
-class TodoForm extends Component {
-  constructor(props) {
-    super(props);
+const TodoForm = ({ addFn }) => {
+  const [input, setInput] = useState('');
 
-    this.state = {
-      inputValue: '',
-    };
-  };
-
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
 
-    const { addFn } = this.props;
-    const { inputValue } = this.state;
+    if (!input.length) return;
 
-    if (!inputValue.length) return;
+    addFn(input);
 
-    addFn(inputValue);
-
-    this.setState({
-      inputValue: '',
-    });
+    setInput('');
   };
 
-  changeInputValue = e => {
+  const changeInputValue = e => {
     const { value } = e.target;
 
-    this.setState({
-      inputValue: value,
-    });
+    setInput(value);
   };
 
-  render() {
-    const { inputValue } = this.state;
+  return (
+    <form onSubmit={onSubmit} className="form-inline">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Add a new todo..."
+        value={input}
+        onChange={changeInputValue}
+      />
 
-    return (
-      <form onSubmit={this.onSubmit} className='form-inline'>
-        <input
-          type='text'
-          className='form-control'
-          placeholder='Add a new todo...'
-          value={inputValue}
-          onChange={this.changeInputValue}
-        />
-
-        <button type='submit' className='btn btn-success'>
-          Add
-        </button>
-      </form>
-    )
-  }
+      <button type="submit" className="btn btn-success">
+        Add
+      </button>
+    </form>
+  );
 };
 
 export default TodoForm;

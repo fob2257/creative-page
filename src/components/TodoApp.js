@@ -1,74 +1,50 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import TodoHeader from './TodoHeader';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
-class TodoApp extends Component {
-  constructor(props) {
-    super(props);
+const TodoApp = () => {
+  const [counter, setCounter] = useState(0);
+  const [items, setItems] = useState([]);
 
-    this.state = {
-      counter: 0,
-      items: [],
-    };
-  };
-
-  componentDidMount() {
+  useEffect(() => {
     const defaultValues = [
       { id: 1, value: 'Buy milk', done: false },
       { id: 2, value: 'Visit grandma', done: true },
-      { id: 3, value: 'Pay bills', done: false },
+      { id: 3, value: 'Pay bills', done: false }
     ];
 
-    this.setState({
-      counter: defaultValues.length,
-      items: defaultValues,
-    });
-  };
+    setCounter(defaultValues.length);
+    setItems(defaultValues);
+  }, []);
 
-  changeDone = itemId => {
-    const { items } = this.state;
-
-    this.setState({
-      items: items.map(item => (item.id === itemId) ? { ...item, done: !item.done } : item),
-    });
-  };
-
-  removeItem = itemId => {
-    const { items } = this.state;
-
-    this.setState({
-      items: items.filter(item => item.id !== itemId),
-    });
-  };
-
-  addItem = value => {
-    const { items, counter } = this.state;
-
-    const id = counter + 1;
-    this.setState({
-      counter: id,
-      items: [{ id, value, done: false }, ...items],
-    });
-  };
-
-  render() {
-    const { items } = this.state;
-
-    return (
-      <div id='main'>
-        <TodoHeader />
-        <TodoForm addFn={this.addItem} />
-        <TodoList
-          items={items}
-          removeFn={this.removeItem}
-          doneFn={this.changeDone}
-        />
-      </div>
+  const changeDone = itemId => {
+    setItems(
+      items.map(item =>
+        item.id === itemId ? { ...item, done: !item.done } : item
+      )
     );
   };
+
+  const removeItem = itemId => {
+    setItems(items.filter(item => item.id !== itemId));
+  };
+
+  const addItem = value => {
+    const id = counter + 1;
+
+    setCounter(id);
+    setItems([{ id, value, done: false }, ...items]);
+  };
+
+  return (
+    <div id="main">
+      <TodoHeader />
+      <TodoForm addFn={addItem} />
+      <TodoList items={items} removeFn={removeItem} doneFn={changeDone} />
+    </div>
+  );
 };
 
 export default TodoApp;
-
